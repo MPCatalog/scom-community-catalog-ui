@@ -1,0 +1,19 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Overrides>
+      <MonitorPropertyOverride ID="Community.ManagementPackCatalog.Configuration.EnableUpdateMonitor" Context="SC!Microsoft.SystemCenter.RootManagementServer" Monitor="CMPC!Community.ManagementPackCatalog.PackStatusMonitor" Property="Enabled" Enforced="false"> 
+        <Value>true</Value>
+      </MonitorPropertyOverride>
+    </Overrides>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.ManagementPackCatalog.Configuration.EnableUpdateMonitor">
+          <Name>Override for Management Pack Catalog Updates</Name>
+          <Description>Override Managed through the Management Pack Community Settings view.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

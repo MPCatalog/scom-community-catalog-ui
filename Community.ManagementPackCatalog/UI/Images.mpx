@@ -1,0 +1,10 @@
+﻿<!--
+  Images.mpx is part of the Community Management Pack Catalog and licensed GPL v3; See https://github.com/mpcatalog/scom-community-catalog-ui/blob/master/LICENSE.
+-->
+<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Resources>
+    <Image ID="Community.ManagementPackCatalog.Images.MagnifyingGlass" FileName="magnifyingglass.png" Accessibility="Internal" HasNullStream="false"/>
+    <Image ID="Community.ManagementPackCatalog.Images.Config" FileName="config.png" Accessibility="Internal" HasNullStream="false"/>
+    <Image ID="Community.ManagementPackCatalog.Images.Community" FileName="community.png" Accessibility="Internal" HasNullStream="false"/>
+  </Resources>
+</ManagementPackFragment>
