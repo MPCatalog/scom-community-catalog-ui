@@ -15,7 +15,7 @@ $redirectBaseUrl = "http://www.mpcatalog.net/CatalogRepo";
 $gitHubRepoBase = (Invoke-WebRequest -Uri $redirectBaseUrl -MaximumRedirection 0 -ErrorAction SilentlyContinue -Headers @{"Referer"="Http://Ps.UpdateMonitor"}).Headers.Location;
 
 # Test to see if this is a secondary redirect, we will follow a maximum of two
-$redirectTestResult = (Invoke-WebRequest -Uri $redirectBaseUrl -MaximumRedirection 0 -ErrorAction SilentlyContinue -Headers @{"Referer"="Http://Ps.UpdateMonitor"})
+$redirectTestResult = (Invoke-WebRequest -Uri $gitHubRepoBase -MaximumRedirection 0 -ErrorAction SilentlyContinue -Headers @{"Referer"="Http://Ps.UpdateMonitor"})
 if ($redirectTestResult.StatusCode -eq 301 -or $redirectTestResult.StatusCode -eq 302)
 	{
 		# If this is another redirect, we'll update the repo address.  If not, do nothing.
