@@ -1,0 +1,45 @@
+﻿<!--
+  ManagementPack.mpx is part of the Community Management Pack Catalog and licensed GPL v3; See https://github.com/mpcatalog/scom-community-catalog-ui/blob/master/LICENSE.
+-->
+
+<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.ManagementPackCatalog">
+          <Name>Community Management Pack Catalog</Name>
+          <Description>The Community Management Pack Catalog is driven by a GitHub Repo and Simple JSON files.  See the Knowledge section of the MP for more.</Description>
+        </DisplayString>
+      </DisplayStrings>
+      <KnowledgeArticles>
+        <KnowledgeArticle ElementID="Community.ManagementPackCatalog">
+          <HtmlContent>
+            <![CDATA[
+            <h2 id="community-management-pack-catalog">Community Management Pack Catalog</h2>
+<h3 id="overview">Overview</h3>
+<p>The Community Management Pack Catalog is an extension to the SCOM console, compatible with Operations Manager 2012 and above.
+The goal of the catalog is to simplify staying up with SCOM management packs and make it easier to find new ones.</p>
+<h3 id="components">Components</h3>
+<ul>
+<li>GitHub Repository</li>
+<li>SCOM UI Elements<ul>
+<li>Discover Management Packs </li>
+<li>Installed Management Packs</li>
+<li>Settings</li>
+</ul>
+</li>
+<li>Management Pack Update Alerting</li>
+</ul>
+<h4 id="github-repository">GitHub Repository</h4>
+<h4 id="discover-management-packs">Discover Management Packs</h4>
+<h4 id="installed-management-packs">Installed Management Packs</h4>
+<h4 id="settings">Settings</h4>
+<p>The settings on this UI pane can enable or disable alerting for management pack updates.</p>
+
+          ]]>
+          </HtmlContent>
+        </KnowledgeArticle>
+      </KnowledgeArticles>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

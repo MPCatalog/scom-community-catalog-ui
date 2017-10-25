@@ -1,0 +1,95 @@
+﻿<!--
+    Update Monitor Types.mpx is part of the Community Management Pack Catalog and licensed GPL v3; See https://github.com/mpcatalog/scom-community-catalog-ui/blob/master/LICENSE.
+-->
+<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <MonitorTypes>
+      <UnitMonitorType ID="Community.ManagementPackCatalog.CheckPackStatusMonitorType" Accessibility="Internal" RunAs="SC!Microsoft.SystemCenter.PrivilegedMonitoringAccount">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="UpToDate"/>
+          <MonitorTypeState ID="Outdated"/>
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="1" name="IntervalSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element minOccurs="1" name="SyncTime" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="Scheduler" TypeID="System!System.SimpleScheduler">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <SyncTime>$Config/SyncTime$</SyncTime>
+            </DataSource>
+            <ProbeAction ID="CheckStatus" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagProbe">
+              <ScriptName>CheckForManagementPackUpdates.PS1</ScriptName>
+              <ScriptBody>$IncludeFileContent/CheckForManagementPackUpdates.ps1$</ScriptBody>
+              <TimeoutSeconds>300</TimeoutSeconds>
+            </ProbeAction>
+            <ProbeAction ID="PassThru" TypeID="System!System.PassThroughProbe"/>
+            <ConditionDetection ID="UpToDateCD" TypeID="System!System.ExpressionFilter" >
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='status']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">UpToDate</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="OutdatedCD" TypeID="System!System.ExpressionFilter" >
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='status']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">Outdated</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="UpToDate">
+              <Node ID="UpToDateCD">
+                <Node ID="CheckStatus">
+                  <Node ID="Scheduler"/>
+                </Node>
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Outdated">
+              <Node ID="OutdatedCD">
+                <Node ID="CheckStatus">
+                  <Node ID="Scheduler"/>
+                </Node>
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="UpToDate">
+              <Node ID="UpToDateCD">
+                <Node ID="CheckStatus">
+                  <Node ID="PassThru"/>
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Outdated">
+              <Node ID="OutdatedCD">
+                <Node ID="CheckStatus">
+                  <Node ID="PassThru"/>
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+    </MonitorTypes>
+  </TypeDefinitions>
+</ManagementPackFragment>

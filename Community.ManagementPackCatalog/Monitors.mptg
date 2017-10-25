@@ -1,0 +1,45 @@
+<TemplateGroup>
+  <Instances>
+    <Instance ID="Instance1cb8bbbf42bb4bd8ba0ce5a2d4aaa2da" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
+      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MonitorType>Community.ManagementPackCatalog.CheckPackStatusMonitorType</MonitorType>
+        <MonitorConfig>&lt;IntervalSeconds&gt;86400&lt;/IntervalSeconds&gt;&lt;SyncTime&gt;09:00&lt;/SyncTime&gt;</MonitorConfig>
+        <MonitorOperationalStates>
+          <OperationalState>
+            <OperationalStateId>UpToDate</OperationalStateId>
+            <OperationalStateDisplayName>Up To Date</OperationalStateDisplayName>
+            <MonitorTypeStateId>UpToDate</MonitorTypeStateId>
+            <HealthState>Success</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>Outdated</OperationalStateId>
+            <OperationalStateDisplayName>Outdated</OperationalStateDisplayName>
+            <MonitorTypeStateId>Outdated</MonitorTypeStateId>
+            <HealthState>Warning</HealthState>
+          </OperationalState>
+        </MonitorOperationalStates>
+        <ParentMonitor>Health!System.Health.ConfigurationState</ParentMonitor>
+        <Accessibility>Internal</Accessibility>
+        <Id>PackStatusMonitor</Id>
+        <DisplayName>Community Pack Updates Monitor</DisplayName>
+        <Description>Performs a daily, or on-demand check to see if the currently installed Community Management Packs are up to date.</Description>
+        <Target>SC!Microsoft.SystemCenter.RootManagementServer</Target>
+        <Enabled>true</Enabled>
+        <Category>ConfigurationHealth</Category>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <AlertAutoResolve>true</AlertAutoResolve>
+        <AlertOnState>Warning</AlertOnState>
+        <AlertPriority>Normal</AlertPriority>
+        <AlertSeverity>Information</AlertSeverity>
+        <AlertName>Updated Community Management Packs Available</AlertName>
+        <AlertDescription>Updates are available to one or more Community Management Packs that you have installed.
+Management Pack Status:
+$Data/Context/DataItem/Property[@Name='PackStatus']$
+
+After applying updates you can re-check the management packs from the Administration pane.</AlertDescription>
+        <ConfirmDelivery>false</ConfirmDelivery>
+      </UnitMonitorConfig>
+    </Instance>
+  </Instances>
+</TemplateGroup>

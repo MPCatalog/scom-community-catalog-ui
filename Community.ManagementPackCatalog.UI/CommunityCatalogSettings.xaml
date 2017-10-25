@@ -1,0 +1,52 @@
+﻿<UserControl
+    x:Class="Community.ManagementPackCatalog.UI.CommunityCatalogSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Community.ManagementPackCatalog.UI"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    Background="#FFF4F7FC"
+    mc:Ignorable="d">
+    <Grid Background="{x:Null}">
+        <CheckBox
+            x:Name="EnableAlertingCheckBox"
+            Margin="10,10,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Enable Alerting for Community Management Pack Updates" />
+        <Label
+            x:Name="StatusLabel"
+            Margin="100,38,0,0"
+            HorizontalAlignment="Left"
+            Background="{x:Null}"
+            Content=""
+            FontStyle="Italic" />
+        <Button
+            x:Name="ApplySettings"
+            Width="85"
+            Height="20"
+            Margin="10,41,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="ApplySettings_Click"
+            Content="Apply Settings" />
+        <Button
+            x:Name="CheckForUpdatesNow"
+            Width="200"
+            Height="20"
+            Margin="10,71,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="CheckForUpdatesNow_Click"
+            Content="Check for pack updates now" />
+        <Label
+            x:Name="ResetStatusLabel"
+            Margin="10,90,0,0"
+            HorizontalAlignment="Left"
+            Background="{x:Null}"
+            Content=""
+            FontStyle="Italic" />
+    </Grid>
+</UserControl>

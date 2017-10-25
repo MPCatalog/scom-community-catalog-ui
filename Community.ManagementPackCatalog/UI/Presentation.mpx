@@ -1,0 +1,89 @@
+﻿<!--
+  Presentation.mpx is part of the Community Management Pack Catalog and licensed GPL v3; See https://github.com/mpcatalog/scom-community-catalog-ui/blob/master/LICENSE.
+-->
+<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <PresentationTypes>
+    <ViewTypes>
+      <ViewType ID="Community.ManagementPackCatalog.CatalogInstalledViewType" Accessibility="Internal">
+        <Configuration>
+          <!--The Management Pack Catalog requires no configuration settings.-->
+        </Configuration>
+        <ViewImplementation>
+          <Assembly>Community.ManagementPackCatalog.UI.Assembly</Assembly>
+          <Type>Community.ManagementPackCatalog.UI.InstalledCatalogPacks</Type>
+        </ViewImplementation>
+      </ViewType>
+      <ViewType ID="Community.ManagementPackCatalog.CatalogDiscoverViewType" Accessibility="Internal">
+        <Configuration>
+          <!--The Management Pack Catalog requires no configuration settings.-->
+        </Configuration>
+        <ViewImplementation>
+          <Assembly>Community.ManagementPackCatalog.UI.Assembly</Assembly>
+          <Type>Community.ManagementPackCatalog.UI.DiscoverCatalogPacks</Type>
+        </ViewImplementation>
+      </ViewType>
+      <ViewType ID="Community.ManagementPackCatalog.CatalogSettingsViewType" Accessibility="Internal">
+        <Configuration>
+          <!--The Management Pack Catalog requires no configuration settings.-->
+        </Configuration>
+        <ViewImplementation>
+          <Assembly>Community.ManagementPackCatalog.UI.Assembly</Assembly>
+          <Type>Community.ManagementPackCatalog.UI.CommunityCatalogSettings</Type>
+        </ViewImplementation>
+      </ViewType>
+    </ViewTypes>
+  </PresentationTypes>
+  <Presentation>
+    <Views>
+      <View ID="Community.ManagementPackCatalog.CatalogInstalledView"
+            Accessibility="Internal"
+            Enabled="true"
+            Target="System!System.Entity"
+            TypeID="Community.ManagementPackCatalog.CatalogInstalledViewType"
+            Visible="true"
+            Comment="The view impements the previously defined type and sets its category.">
+        <Category>Administration</Category>
+      </View>
+      <View ID="Community.ManagementPackCatalog.CatalogDiscoverView"
+      Accessibility="Internal"
+      Enabled="true"
+      Target="System!System.Entity"
+      TypeID="Community.ManagementPackCatalog.CatalogDiscoverViewType"
+      Visible="true"
+      Comment="The view impements the previously defined type and sets its category.">
+        <Category>Administration</Category>
+      </View>
+      <View ID="Community.ManagementPackCatalog.CatalogSettingsView"
+      Accessibility="Internal"
+      Enabled="true"
+      Target="System!System.Entity"
+      TypeID="Community.ManagementPackCatalog.CatalogSettingsViewType"
+      Visible="true"
+      Comment="The view impements the previously defined type and sets its category.">
+        <Category>Administration</Category>
+      </View>
+    </Views>
+    <ImageReferences>
+      <ImageReference ElementID="Community.ManagementPackCatalog.BaseUIFolder" ImageID="Community.ManagementPackCatalog.Images.Community"/>
+      <ImageReference ElementID="Community.ManagementPackCatalog.CatalogDiscoverViewType" ImageID="Community.ManagementPackCatalog.Images.MagnifyingGlass"/>
+      <ImageReference ElementID="Community.ManagementPackCatalog.CatalogSettingsViewType" ImageID="Community.ManagementPackCatalog.Images.Config"/>
+    </ImageReferences>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.ManagementPackCatalog.CatalogInstalledView">
+          <Name>Installed Community Packs</Name>
+          <Description>Status and Version of currently installed Community Packs.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.ManagementPackCatalog.CatalogDiscoverView">
+          <Name>Discover Community Packs</Name>
+          <Description>A Community Curated Catalog of Management Packs</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.ManagementPackCatalog.CatalogSettingsView">
+          <Name>Settings</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>
