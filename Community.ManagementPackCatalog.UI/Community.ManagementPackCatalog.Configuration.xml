@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ManagementPack SchemaVersion="2.0" ContentReadable="true" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Manifest>
+    <Identity>
+      <ID>Community.ManagementPackCatalog.Configuration</ID>
+      <Version>1.0.0.1</Version>
+    </Identity>
+    <Name>Community.ManagementPackCatalog.Configuration</Name>
+    <References>
+      <Reference Alias="SC">
+        <ID>Microsoft.SystemCenter.Library</ID>
+        <Version>7.0.0.0</Version>
+        <PublicKeyToken>31bf3856ad364e35</PublicKeyToken>
+      </Reference>
+      <Reference Alias="CMPC">
+        <ID>Community.ManagementPackCatalog</ID>
+        <Version>1.0.0.0</Version>
+        <PublicKeyToken>e59ef067fc54883b</PublicKeyToken>
+      </Reference>
+    </References>
+  </Manifest>
+  <Monitoring>
+    <Overrides>
+      <MonitorPropertyOverride ID="Community.ManagementPackCatalog.Configuration.EnableUpdateMonitor" Context="SC!Microsoft.SystemCenter.RootManagementServer" Monitor="CMPC!Community.ManagementPackCatalog.PackStatusMonitor" Property="Enabled" Enforced="false">
+        <Value>true</Value>
+      </MonitorPropertyOverride>
+    </Overrides>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.ManagementPackCatalog.Configuration">
+          <Name>Community Management Pack Catalog Configuration</Name>
+          <Description>This unsealed pack holds the configuration settings for the Community Management Pack Catalog</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.ManagementPackCatalog.Configuration.EnableUpdateMonitor">
+          <Name>Override for Management Pack Catalog Updates</Name>
+          <Description>Override Managed through the Management Pack Community Settings view.</Description>
+        </DisplayString>
+      </DisplayStrings>
+      <KnowledgeArticles></KnowledgeArticles>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPack>

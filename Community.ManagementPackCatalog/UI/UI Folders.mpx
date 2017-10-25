@@ -1,0 +1,33 @@
+﻿<!--
+  UI Folders.mpx is part of the Community Management Pack Catalog and licensed GPL v3; See https://github.com/mpcatalog/scom-community-catalog-ui/blob/master/LICENSE.
+-->
+<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Presentation>
+    <Folders>
+      <Folder ID="Community.ManagementPackCatalog.BaseUIFolder"
+              Accessibility="Public"
+              ParentFolder="OperationsManagerLibrary!Microsoft.SystemCenter.OperationsManager.Administration.Root"
+              Comment="This will be our container for Management Packs from the Community and their management."/>
+    </Folders>
+    <FolderItems>
+      <FolderItem ElementID="Community.ManagementPackCatalog.CatalogInstalledView"
+                  ID="Community.ManagementPackCatalog.CatalogInstalledFolderItem"
+                  Folder="Community.ManagementPackCatalog.BaseUIFolder" />
+      <FolderItem ElementID="Community.ManagementPackCatalog.CatalogDiscoverView"
+                  ID="Community.ManagementPackCatalog.CatalogDiscoverFolderItem"
+                  Folder="Community.ManagementPackCatalog.BaseUIFolder" />
+      <FolderItem ElementID="Community.ManagementPackCatalog.CatalogSettingsView"
+            ID="Community.ManagementPackCatalog.CatalogSettingsFolderItem"
+            Folder="Community.ManagementPackCatalog.BaseUIFolder" />
+    </FolderItems>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.ManagementPackCatalog.BaseUIFolder">
+          <Name>Management Packs (Community)</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>
