@@ -110,7 +110,7 @@ namespace Community.ManagementPackCatalog.UI.Models
         {
             get
             {
-                if(Description != null && Description?.Length > 105)
+                if (Description != null && Description?.Length > 105)
                 {
                     return Description?.Substring(0, 100) + "...";
                 }
@@ -118,7 +118,6 @@ namespace Community.ManagementPackCatalog.UI.Models
                 {
                     return Description;
                 }
-                
             }
         }
 

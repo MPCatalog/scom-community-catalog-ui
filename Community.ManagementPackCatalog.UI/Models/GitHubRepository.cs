@@ -9,13 +9,13 @@ namespace Community.ManagementPackCatalog.UI.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
+    using Microsoft.Win32;
     using Newtonsoft.Json;
     using static LogManager;
-    using Microsoft.Win32;
-    using System.Net;
 
     /// <summary>
     /// The GitHubIndex class manages and fetches the data from the JSON files hosted on the GitHub Repository.
@@ -51,13 +51,14 @@ namespace Community.ManagementPackCatalog.UI.Models
         }
 
         /// <summary>
-        /// Represents the tags to suggest on the UI
+        /// Gets a array of the tags to suggest on the UI
         /// </summary>
         public string[] RecommendedSearchTags { get; private set; }
 
         /// <summary>
         /// Asynchronously performs the population of the Repository from the index.
         /// </summary>
+        /// <param name="callingModuleName">Name of the module populating the repository</param>
         /// <returns>a Threading Task for the status of Populating the Index</returns>
         public async Task PopulateDataFromRepository(string callingModuleName)
         {
@@ -95,8 +96,8 @@ namespace Community.ManagementPackCatalog.UI.Models
                         ex.Message,
                         501);
 
-                string messageForUsers = ("The Management Pack Catalog requires an outgoing Internet connection," + Environment.NewLine
-                                            + "Please see http://mpcatalog.net/help for additional details.");
+                string messageForUsers = "The Management Pack Catalog requires an outgoing Internet connection," + Environment.NewLine
+                                            + "Please see http://mpcatalog.net/help for additional details.";
 
                 System.Windows.Forms.MessageBox.Show(messageForUsers);
             }
@@ -106,13 +107,13 @@ namespace Community.ManagementPackCatalog.UI.Models
         /// Gets the HttpClient that will be used for the connection to GitHub.
         /// If proxy settings are available in the registry they will be added here.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A HttpClient for connecting to GitHub</returns>
         private HttpClient GetGitHubClient()
         {
             HttpClientHandler httpClientHandler = null;
-            string proxyAddress = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "proxyAddress", null); ;
-            string proxyUserName = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "proxyUserName", null); ;
-            string proxyPassword = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "proxyPassword", null); ;
+            string proxyAddress = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "proxyAddress", null);
+            string proxyUserName = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "proxyUserName", null);
+            string proxyPassword = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "proxyPassword", null);
 
             string proxyDetails = string.Format("Proxy Address = {0}, User = {1}, Password = {2}", proxyAddress, proxyUserName, proxyPassword);
             Log.WriteTrace(EventType.ExternalDependency, "Configuring Proxy for GitHub", proxyDetails);
@@ -164,7 +165,7 @@ namespace Community.ManagementPackCatalog.UI.Models
         /// Populates the RecommendedSearchTags property with data returned from the provided URL
         /// </summary>
         /// <param name="recommendedTagsJsonFile">Location of the file containing the properties</param>
-        /// <returns></returns>
+        /// <returns>Array of recommended tags</returns>
         private async Task<string[]> GetRecommendedSearchTags(string recommendedTagsJsonFile)
         {
             try
@@ -189,10 +190,12 @@ namespace Community.ManagementPackCatalog.UI.Models
         /// <summary>
         /// Populates the Resource Settings from their storage location.
         /// </summary>
+        /// <param name="refererName">A string without 'HTTP' that indicates what is requesting the data.</param>
+        /// <returns>Task object to track the progress</returns>
         private async Task PopulateClassFieldsFromResources(string refererName)
         {
             // Need to choose a resource method, AppConfig isn't an option for SCOM
-            gitHubRepoBase = "";
+            gitHubRepoBase = string.Empty;
             string registryGitHubRepoValue = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "GitHubRepoBase", null);
             if (registryGitHubRepoValue != null)
             {

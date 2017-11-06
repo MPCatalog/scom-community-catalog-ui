@@ -18,7 +18,7 @@
     <Company>Squared Up Ltd</Company>
     <Copyright>Copyright (c) Squared Up Ltd. All rights reserved.</Copyright>
     <DelaySigning>False</DelaySigning>
-    <AssemblyOriginatorKeyFile>SQMP.Community.Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Community.Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>false</DebugSymbols>
@@ -27,7 +27,7 @@
     <Company>Squared Up Ltd</Company>
     <Copyright>Copyright (c) Squared Up Ltd. All rights reserved.</Copyright>
     <DelaySign>false</DelaySign>
-    <AssemblyOriginatorKeyFile>SQMP.Community.Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Community.Key.snk</AssemblyOriginatorKeyFile>
     <GenerateSealed>True</GenerateSealed>
   </PropertyGroup>
   <ItemGroup>

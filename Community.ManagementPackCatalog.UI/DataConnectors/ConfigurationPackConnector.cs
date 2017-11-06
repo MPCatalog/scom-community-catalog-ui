@@ -50,11 +50,11 @@ namespace Community.ManagementPackCatalog.UI.DataConnectors
                     try
                     {
                         DialogResult installPack = System.Windows.Forms.MessageBox.Show(
-                            "A small unsealed MP is required to configure the alerting, can we create it now?" 
-                            + Environment.NewLine + "Community.ManagementPackCatalog.Configuration will be created for alert configuration overrides."
-                            , "Create Override Pack?"
-                            , System.Windows.Forms.MessageBoxButtons.YesNo
-                            , System.Windows.Forms.MessageBoxIcon.Information);
+                            "A small unsealed MP is required to configure the alerting, can we create it now?"
+                            + Environment.NewLine + "Community.ManagementPackCatalog.Configuration will be created for alert configuration overrides.",
+                            "Create Override Pack?",
+                            System.Windows.Forms.MessageBoxButtons.YesNo,
+                            System.Windows.Forms.MessageBoxIcon.Information);
 
                         if (installPack == DialogResult.Yes)
                         {
