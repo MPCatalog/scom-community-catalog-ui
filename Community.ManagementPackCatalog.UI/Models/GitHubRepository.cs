@@ -14,6 +14,8 @@ namespace Community.ManagementPackCatalog.UI.Models
     using System.Threading.Tasks;
     using Newtonsoft.Json;
     using static LogManager;
+    using Microsoft.Win32;
+    using System.Net;
 
     /// <summary>
     /// The GitHubIndex class manages and fetches the data from the JSON files hosted on the GitHub Repository.
@@ -67,7 +69,7 @@ namespace Community.ManagementPackCatalog.UI.Models
                 string recommendedTagsJsonFile = gitHubRepoBase + "RecommendedSearchTags.json";
 
                 // we'll use a single client for the data pull, but no reason for it to stay open once we have what we need.
-                using (gitHubHttpClient = new HttpClient())
+                using (gitHubHttpClient = GetGitHubClient())
                 {
                     // 20 seconds should do for these small JSON Docs
                     gitHubHttpClient.Timeout = new TimeSpan(0, 0, 20);
@@ -83,13 +85,79 @@ namespace Community.ManagementPackCatalog.UI.Models
             }
             catch (Exception ex)
             {
+                // Things failed to resolve, empty our results
+                managementPackDetailedEntries = new Dictionary<string, GitHubPackDetail>();
+                RecommendedSearchTags = new string[0];
+
                 Log.WriteError(
                         EventType.ExternalDependency,
-                        "Failed to create the GitHubIndex Object",
+                        "Failed to retrieve the GitHub Index",
                         ex.Message,
                         501);
-                throw;
+
+                string messageForUsers = ("The Management Pack Catalog requires an outgoing Internet connection," + Environment.NewLine
+                                            + "Please see http://mpcatalog.net/help for additional details.");
+
+                System.Windows.Forms.MessageBox.Show(messageForUsers);
             }
+        }
+
+        /// <summary>
+        /// Gets the HttpClient that will be used for the connection to GitHub.
+        /// If proxy settings are available in the registry they will be added here.
+        /// </summary>
+        /// <returns></returns>
+        private HttpClient GetGitHubClient()
+        {
+            HttpClientHandler httpClientHandler = null;
+            string proxyAddress = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "proxyAddress", null); ;
+            string proxyUserName = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "proxyUserName", null); ;
+            string proxyPassword = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "proxyPassword", null); ;
+
+            string proxyDetails = string.Format("Proxy Address = {0}, User = {1}, Password = {2}", proxyAddress, proxyUserName, proxyPassword);
+            Log.WriteTrace(EventType.ExternalDependency, "Configuring Proxy for GitHub", proxyDetails);
+
+            // Based on the values found, create the correct httpClientHandler.
+            if (proxyAddress != null && proxyUserName == null && proxyPassword == null)
+            {
+                httpClientHandler = new HttpClientHandler
+                {
+                    Proxy = new WebProxy
+                    {
+                        Address = new Uri(proxyAddress),
+                        BypassProxyOnLocal = false
+                    },
+                    UseDefaultCredentials = true,
+                    UseProxy = true
+                };
+
+                Log.WriteTrace(EventType.ExternalDependency, "Proxy configured to use default credentials.");
+            }
+            else if (proxyAddress != null && proxyUserName != null && proxyPassword != null)
+            {
+                httpClientHandler = new HttpClientHandler
+                {
+                    Proxy = new WebProxy
+                    {
+                        Address = new Uri(proxyAddress),
+                        BypassProxyOnLocal = false,
+                        Credentials = new NetworkCredential(proxyUserName, proxyPassword)
+                    },
+                    UseDefaultCredentials = false,
+                    PreAuthenticate = true,
+                    UseProxy = true
+                };
+
+                Log.WriteTrace(EventType.ExternalDependency, "Proxy configured to use custom credentials.");
+            }
+            else
+            {
+                httpClientHandler = new HttpClientHandler();
+
+                Log.WriteTrace(EventType.ExternalDependency, "Proxy was not configured, proceeding with no proxy.");
+            }
+
+            return new HttpClient(httpClientHandler);
         }
 
         /// <summary>
@@ -125,34 +193,43 @@ namespace Community.ManagementPackCatalog.UI.Models
         {
             // Need to choose a resource method, AppConfig isn't an option for SCOM
             gitHubRepoBase = "";
-            string catalogRedirectUrl = "http://www.mpcatalog.net/CatalogRepo";
-
-            // Don't Follow our redirects when found
-            HttpClientHandler httpClientHandler = new HttpClientHandler();
-            httpClientHandler.AllowAutoRedirect = false;
-
-            // Using the catalogRedirectUrl we pull the actual destination of the index.
-            using (gitHubHttpClient = new HttpClient(httpClientHandler))
+            string registryGitHubRepoValue = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\SCOM-MPCatalog", "GitHubRepoBase", null);
+            if (registryGitHubRepoValue != null)
             {
-                gitHubHttpClient.DefaultRequestHeaders.Referrer = new Uri("HTTP://" + refererName);
+                gitHubRepoBase = registryGitHubRepoValue;
+                return;
+            }
+            else
+            {
+                string catalogRedirectUrl = "http://www.mpcatalog.net/CatalogRepo";
 
-                // Pull the base URL from our redirect
-                var fetchResults = await gitHubHttpClient.GetAsync(catalogRedirectUrl);
-                if(fetchResults.StatusCode == System.Net.HttpStatusCode.Moved || fetchResults.StatusCode == System.Net.HttpStatusCode.Redirect)
-                {
-                    gitHubRepoBase = fetchResults.Headers.Location.ToString();
-                }
-                else
-                {
-                    throw new Exception("Unable to resolve the index location from " + catalogRedirectUrl);
-                }
+                // Don't Follow our redirects when found
+                HttpClientHandler httpClientHandler = new HttpClientHandler();
+                httpClientHandler.AllowAutoRedirect = false;
 
-                // Test to see if this is a second redirect, we follow a max of two redirects
-                fetchResults = null;
-                fetchResults = await gitHubHttpClient.GetAsync(gitHubRepoBase);
-                if (fetchResults.StatusCode == System.Net.HttpStatusCode.Moved || fetchResults.StatusCode == System.Net.HttpStatusCode.Redirect)
+                // Using the catalogRedirectUrl we pull the actual destination of the index.
+                using (gitHubHttpClient = new HttpClient(httpClientHandler))
                 {
-                    gitHubRepoBase = fetchResults.Headers.Location.ToString();
+                    gitHubHttpClient.DefaultRequestHeaders.Referrer = new Uri("HTTP://" + refererName);
+
+                    // Pull the base URL from our redirect
+                    var fetchResults = await gitHubHttpClient.GetAsync(catalogRedirectUrl);
+                    if (fetchResults.StatusCode == System.Net.HttpStatusCode.Moved || fetchResults.StatusCode == System.Net.HttpStatusCode.Redirect)
+                    {
+                        gitHubRepoBase = fetchResults.Headers.Location.ToString();
+                    }
+                    else
+                    {
+                        throw new Exception("Unable to resolve the index location from " + catalogRedirectUrl);
+                    }
+
+                    // Test to see if this is a second redirect, we follow a max of two redirects
+                    fetchResults = null;
+                    fetchResults = await gitHubHttpClient.GetAsync(gitHubRepoBase);
+                    if (fetchResults.StatusCode == System.Net.HttpStatusCode.Moved || fetchResults.StatusCode == System.Net.HttpStatusCode.Redirect)
+                    {
+                        gitHubRepoBase = fetchResults.Headers.Location.ToString();
+                    }
                 }
             }
         }

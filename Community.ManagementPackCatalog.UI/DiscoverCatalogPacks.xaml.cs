@@ -111,11 +111,17 @@ namespace Community.ManagementPackCatalog.UI
             {
                 communityManagementPackIndex = new Models.GitHubRepository();
                 Task.Run(() => communityManagementPackIndex.PopulateDataFromRepository("DiscoverPacks")).Wait();
-                packsToDisplay = communityManagementPackIndex.ManagementPacks.Values.ToArray();
+                packsToDisplay = communityManagementPackIndex.ManagementPacks?.Values.ToArray();
             }
 
             // Empty the list prior to re-populating
             CommunityPackList.Items.Clear();
+
+            // If there are no packs in the list, discovery will be blank.
+            if (packsToDisplay == null)
+            {
+                return;
+            }
 
             foreach (GitHubPackDetail communityPack in packsToDisplay.OrderBy(mp => mp.ManagementPackDisplayName))
             {
