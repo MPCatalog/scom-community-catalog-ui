@@ -111,9 +111,9 @@ namespace Community.ManagementPackCatalog.UI.Models
         private HttpClient GetGitHubClient()
         {
             HttpClientHandler httpClientHandler = null;
-            string proxyAddress = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\MPCatalog", "proxyAddress", null);
-            string proxyUserName = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\MPCatalog", "proxyUserName", null);
-            string proxyPassword = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\MPCatalog", "proxyPassword", null);
+            string proxyAddress = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\MPCatalog", "proxyAddress", null) ?? (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\Software\\MPCatalog", "proxyAddress", null);
+            string proxyUserName = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\MPCatalog", "proxyUserName", null) ?? (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\Software\\MPCatalog", "proxyUserName", null);
+            string proxyPassword = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\MPCatalog", "proxyPassword", null) ?? (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\Software\\MPCatalog", "proxyPassword", null);
 
             string proxyDetails = string.Format("Proxy Address = {0}, User = {1}, Password = {2}", proxyAddress, proxyUserName, proxyPassword);
             Log.WriteTrace(EventType.ExternalDependency, "Configuring Proxy for GitHub", proxyDetails);
@@ -196,7 +196,7 @@ namespace Community.ManagementPackCatalog.UI.Models
         {
             // Need to choose a resource method, AppConfig isn't an option for SCOM
             gitHubRepoBase = string.Empty;
-            string registryGitHubRepoValue = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\MPCatalog", "GitHubRepoBase", null);
+            string registryGitHubRepoValue = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\MPCatalog", "GitHubRepoBase", null) ?? (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\Software\\MPCatalog", "GitHubRepoBase", null);
             if (registryGitHubRepoValue != null)
             {
                 gitHubRepoBase = registryGitHubRepoValue;

@@ -2,7 +2,7 @@
   <Resources>
     <DeployableAssembly ID="Community.ManagementPackCatalog.UI.Assembly"
         Accessibility="Internal"
-        QualifiedName="Community.ManagementPackCatalog.UI, Version=1.0.2.0, Culture=neutral, PublicKeyToken=e59ef067fc54883b"
+        QualifiedName="Community.ManagementPackCatalog.UI, Version=1.0.2.1, Culture=neutral, PublicKeyToken=e59ef067fc54883b"
         FileName="Community.ManagementPackCatalog.UI.dll"
         HasNullStream="false"
         Comment="This assembly provides the UI and Connectivity to the Community Management Pack Catalog, it has been signed with the SQMP Community key">
