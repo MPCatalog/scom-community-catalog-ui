@@ -9,6 +9,7 @@ namespace Community.ManagementPackCatalog.UI.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
@@ -20,6 +21,14 @@ namespace Community.ManagementPackCatalog.UI.Models
     /// </summary>
     public class GitHubRepository
     {
+        /// <summary>
+        /// This constructor initialises the class and sets TLS version to 1.2
+        /// </summary>
+        public GitHubRepository ()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        }
+
         /// <summary>
         /// The working set of Management Pack Details can only be modified from inside the class, the Public Property is GET only.
         /// </summary>
